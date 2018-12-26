@@ -169,6 +169,34 @@ static void SetSysClock(void);
   static void SetSysClockTo72(void);
 #endif
 
+#ifdef FREE_RTOS
+/** @addtogroup STM32F10x_System_Private_Variables
+  * @{
+  */
+
+/*******************************************************************************
+*  Clock Definitions
+*******************************************************************************/
+#ifdef SYSCLK_FREQ_HSE
+  uint32_t SystemCoreClock         = SYSCLK_FREQ_HSE;        /*!< System Clock Frequency (Core Clock) */
+#elif defined SYSCLK_FREQ_24MHz
+  uint32_t SystemCoreClock         = SYSCLK_FREQ_24MHz;        /*!< System Clock Frequency (Core Clock) */
+#elif defined SYSCLK_FREQ_36MHz
+  uint32_t SystemCoreClock         = SYSCLK_FREQ_36MHz;        /*!< System Clock Frequency (Core Clock) */
+#elif defined SYSCLK_FREQ_48MHz
+  uint32_t SystemCoreClock         = SYSCLK_FREQ_48MHz;        /*!< System Clock Frequency (Core Clock) */
+#elif defined SYSCLK_FREQ_56MHz
+  uint32_t SystemCoreClock         = SYSCLK_FREQ_56MHz;        /*!< System Clock Frequency (Core Clock) */
+#elif defined SYSCLK_FREQ_72MHz
+  uint32_t SystemCoreClock         = SYSCLK_FREQ_72MHz;        /*!< System Clock Frequency (Core Clock) */
+#else /*!< HSI Selected as System Clock source */
+  uint32_t SystemCoreClock         = HSI_VALUE;        /*!< System Clock Frequency (Core Clock) */
+#endif
+
+__I uint8_t AHBPrescTable[16] = {0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 6, 7, 8, 9};
+
+#endif
+
 /**
   * @}
   */

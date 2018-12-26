@@ -1,11 +1,11 @@
 
 #include "main_menu.h"
 
-#include "FreeRTOS.h"
-#include "task.h"
-
 
 #ifdef FREE_RTOS
+
+#include "FreeRTOS.h"
+#include "task.h"
 
 /* Task priorities. */
 #define mainQUEUE_POLL_PRIORITY				( tskIDLE_PRIORITY + 2 )
@@ -91,17 +91,37 @@ extern void vSetupTimerTest( void );
 //QueueHandle_t xLCDQueue;
 
 /*-----------------------------------------------------------*/
+
+TaskHandle_t myTask1Handle = NULL;
+void myTask1 (void *p)
+{
+	int count = 0;
+	while(1)
+	{
+		printf("testing task1 %d \r\n", count++);
+		vTaskDelay(100);
+	}
+}
 #endif
+
+bool g_TestProcessState = FALSE;
 
 int main(void)
 {
 #ifdef FREE_RTOS
     prvSetupHardware();
-	printf("testing\r\n");
+	xTaskCreate(myTask1, "task1", 200, (void *) 0, tskIDLE_PRIORITY, &myTask1Handle);
+	
 
 	vTaskStartScheduler();
 #else
-
+	RCC_Configuration();
+	GPIO_Configuration();
+	USART1_Init();
+	while(1)
+	{
+		printf("testing\r\n");
+	}
 #endif
 
 }
@@ -111,7 +131,8 @@ int main(void)
 /*-----------------------------------------------------------*/
 
 static void prvSetupHardware( void )
-{
+{	
+	
 	/* Start with the clocks in their expected state. */
 	RCC_DeInit();
 
@@ -168,7 +189,22 @@ static void prvSetupHardware( void )
 	NVIC_PriorityGroupConfig( NVIC_PriorityGroup_4 );
 
 	/* Configure HCLK clock as SysTick clock source. */
-	SysTick_CLKSourceConfig( SysTick_CLKSource_HCLK );
+	//SysTick_CLKSourceConfig( SysTick_CLKSource_HCLK );
+	
+	GPIO_InitTypeDef GPIO_InitStructure;
+
+    // UART configuration ...
+
+    /* Configure USARTx_Tx as alternate function push-pull */
+    GPIO_InitStructure.GPIO_Pin   = GPIO_USART_Tx_Pin;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_AF_PP;
+    GPIO_Init(GPIO_USART, &GPIO_InitStructure);
+
+    /* Configure USARTx_Rx as input floating */
+    GPIO_InitStructure.GPIO_Pin  = GPIO_USART_Rx_Pin;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
+    GPIO_Init(GPIO_USART, &GPIO_InitStructure);
 
 	USART1_Init();
 }
