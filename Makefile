@@ -39,7 +39,7 @@ SUB_DIRS += kernel/freeRTOS
 endif
 
 ifeq ($(USE_FREERTOS), y)
-C_DEF += -D FREE_RTOS
+C_DEFS += -D FREE_RTOS
 endif
 
 
