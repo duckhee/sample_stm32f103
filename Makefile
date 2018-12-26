@@ -17,7 +17,7 @@ include $(TOP)/inc.mk
 
 TARGET = sample_test
 
-#USE_FREERTOS = y
+USE_FREERTOS = y
 
 
 
@@ -39,7 +39,7 @@ SUB_DIRS += kernel/freeRTOS
 endif
 
 ifeq ($(USE_FREERTOS), y)
-C_DEFS += -D FREE_RTOS
+CDEFS += -D FREE_RTOS
 endif
 
 

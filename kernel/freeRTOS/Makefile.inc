@@ -16,10 +16,10 @@ ifeq ($(USE_FREERTOS),y)
 
 
 SUB_ARCH := \
-kernel/freeRTOS/Common/Minimal \
-kernel/freeRTOS/MemMang \
-kernel/freeRTOS/portable/ARM_CM3 \
-kernel/freeRTOS \
+Common/Minimal \
+MemMang \
+portable/ARM_CM3 \
+
 
 C_SOURCES += $(FREERTOS_CORE_SOURCES)
 

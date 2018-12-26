@@ -9,6 +9,7 @@ CMSIS/Core/CM3/startup/gcc \
 Menu/Src \
 STM32F10x_StdPeriph_Driver/Src \
 STM32_USB-FS-Device_Driver/Src \
+USB/Src \
 Src \
 
 ifeq ($(MANGO_Z1),y)
