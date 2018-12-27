@@ -93,15 +93,27 @@ extern void vSetupTimerTest( void );
 /*-----------------------------------------------------------*/
 
 TaskHandle_t myTask1Handle = NULL;
+TaskHandle_t myTask2Handle = NULL;
+
 void myTask1 (void *p)
 {
 	int count = 0;
 	while(1)
 	{
 		printf("testing task1 %d \r\n", count++);
-		vTaskDelay(100);
+		vTaskDelay(1000);
 	}
 }
+
+void myTask2 (void *p)
+{
+	while(1)
+	{
+		printf("testing task2 \r\n");
+		vTaskDelay(300);
+	}
+}
+
 #endif
 
 bool g_TestProcessState = FALSE;
@@ -109,11 +121,24 @@ bool g_TestProcessState = FALSE;
 int main(void)
 {
 #ifdef FREE_RTOS
-    prvSetupHardware();
-	xTaskCreate(myTask1, "task1", 200, (void *) 0, tskIDLE_PRIORITY, &myTask1Handle);
-	
+    RCC_Configuration();
+	GPIO_Configuration();
+	NVIC_SetVectorTable( NVIC_VectTab_FLASH, 0x0 );
 
+	NVIC_PriorityGroupConfig( NVIC_PriorityGroup_4 );
+
+	/* Configure HCLK clock as SysTick clock source. */
+	SysTick_CLKSourceConfig( SysTick_CLKSource_HCLK );
+	USART1_Init();
+	printf("testing set\r\n");
+	xTaskCreate(myTask1, "task1", 200, (void *) 0, tskIDLE_PRIORITY, &myTask1Handle);
+	xTaskCreate(myTask2, "task2", 200, (void *)0, tskIDLE_PRIORITY, &myTask2Handle);
+	printf("scheduler startup \r\n");
 	vTaskStartScheduler();
+	while(1)
+	{
+
+	}
 #else
 	RCC_Configuration();
 	GPIO_Configuration();
@@ -128,6 +153,13 @@ int main(void)
 
 
 #ifdef FREE_RTOS
+static void prvSetupHardware(void)
+{
+
+}
+#endif
+
+#ifdef NOT
 /*-----------------------------------------------------------*/
 
 static void prvSetupHardware( void )
@@ -189,7 +221,7 @@ static void prvSetupHardware( void )
 	NVIC_PriorityGroupConfig( NVIC_PriorityGroup_4 );
 
 	/* Configure HCLK clock as SysTick clock source. */
-	//SysTick_CLKSourceConfig( SysTick_CLKSource_HCLK );
+	SysTick_CLKSourceConfig( SysTick_CLKSource_HCLK );
 	
 	GPIO_InitTypeDef GPIO_InitStructure;
 

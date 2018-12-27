@@ -19,15 +19,26 @@ __attribute__ ((used)) int _write(int fd, char *ptr, int len)
 
 //retargetting _read
 /*
-__attribute__ ((used)) int _read(char *buf, int len)
+__attribute__ ((used)) int _read(int fd, char *buf, int len)
 {
-    size_t i;
-    for(i = 0; i < len; ++i)
+    for(fd = 0; fd < count; fd++)
     {
-        buf[i] = USART_ReceiveData(USART1);
-        while(USART_GetFlagStatus(USART1, USART_FLAG_RXNE) == RESET);
+        while(pc_buffer_empty(&usart1_rx))
+        {
+            ;
+        }
+        disable_interruptes();
+        pc_buffer_remove(&uart1_rx, (char *)buf++);
+        enable_interrupts();
     }
-    return i;
+    return count;
+//    size_t i;
+//    for(i = 0; i < len; ++i)
+//    {
+//        buf[i] = USART_ReceiveData(USART1);
+//        while(USART_GetFlagStatus(USART1, USART_FLAG_RXNE) == RESET);
+//    }
+//    return i;
 }
 */
 /*
