@@ -117,6 +117,19 @@ void myTask2 (void *p)
 #endif
 
 bool g_TestProcessState = FALSE;
+RCC_ClocksTypeDef rcc_clocks;
+
+void System_Information()
+{
+    DEBUG_MSG_FUNC_START;
+
+    printf("SYSCLK_Frequency = %d\n",rcc_clocks.SYSCLK_Frequency );
+    printf("HCLK_Frequency = %d\n",rcc_clocks.HCLK_Frequency );
+    printf("PCLK1_Frequency = %d\n",rcc_clocks.PCLK1_Frequency );
+    printf("PCLK2_Frequency = %d\n",rcc_clocks.PCLK2_Frequency );
+    printf("ADCCLK_Frequency = %d\n",rcc_clocks.ADCCLK_Frequency );
+}
+
 
 int main(void)
 {
@@ -124,16 +137,20 @@ int main(void)
     RCC_Configuration();
 	GPIO_Configuration();
 	NVIC_SetVectorTable( NVIC_VectTab_FLASH, 0x0 );
-
 	NVIC_PriorityGroupConfig( NVIC_PriorityGroup_4 );
-
 	/* Configure HCLK clock as SysTick clock source. */
 	SysTick_CLKSourceConfig( SysTick_CLKSource_HCLK );
 	USART1_Init();
-	printf("testing set\r\n");
+
+	
+	System_Information();
+	RCC_GetClocksFreq(&rcc_clocks);
+	
 	xTaskCreate(myTask1, "task1", 200, (void *) 0, tskIDLE_PRIORITY, &myTask1Handle);
 	xTaskCreate(myTask2, "task2", 200, (void *)0, tskIDLE_PRIORITY, &myTask2Handle);
+	
 	printf("scheduler startup \r\n");
+	
 	vTaskStartScheduler();
 	while(1)
 	{
@@ -143,9 +160,13 @@ int main(void)
 	RCC_Configuration();
 	GPIO_Configuration();
 	USART1_Init();
+	System_Information();
+	
+	RCC_GetClocksFreq(&rcc_clocks);
 	while(1)
 	{
 		printf("testing\r\n");
+		Delay(1000);
 	}
 #endif
 

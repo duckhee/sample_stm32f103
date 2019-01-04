@@ -31,6 +31,7 @@
 uint32_t ADC_ConvertedValueX = 0;
 uint32_t ADC_ConvertedValueX_1 = 0;
 static volatile uint32_t TimingDelay;
+RCC_ClocksTypeDef  rcc_clocks;
 
 /* functions */
 
@@ -519,8 +520,13 @@ uint8_t USART_GetCharacter(USART_TypeDef *  usart_p)
     USART_SendData(usart_p, data);
     while(USART_GetFlagStatus(usart_p, USART_FLAG_TXE) == RESET);
 
-    if( data == '\r' )  return (int)('\n');
-    else                return(data);
+    if( data == '\r' )
+    {
+        return (int)('\n');
+    }  
+    else{
+        return(data);
+    }
 }
 
 //need to set int _write(int file, char* ch, int len)
