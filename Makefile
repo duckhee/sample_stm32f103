@@ -32,7 +32,7 @@ ASM_SOURCES =
 
 SUB_DIRS := 
 SUB_DIRS += arch
-SUB_DIRS += kernel
+#SUB_DIRS += kernel
 
 ifeq ($(USE_FREERTOS), y)
 SUB_DIRS += kernel/freeRTOS

@@ -1,7 +1,7 @@
 #ifndef __KEY_MENU_H__
 #define __KEY_MENU_H__
 
-#include "menu.h"
+#include "main_menu.h"
 
 #ifdef KEY_MENU_LOCAL
 #define KEY_MENU_DEF     extern

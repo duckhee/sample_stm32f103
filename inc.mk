@@ -29,7 +29,6 @@ ComSpec = arm-none-eabi
 
 SHELL = sh
 
-REMOVE_CMD = rm
 
 CC = $(PREFIX)gcc
 CPP = $(PREFIX)g++
@@ -64,10 +63,6 @@ FORMAT = binary
 # 0 = turn off optimization. s = optimize for size.
 # (Note: 3 is not always the best optimization level. See avr-libc FAQ.)
 OPT = g
-
-# macrros for gcc 
-# As defines
-AS_DEF = 
 
 # Debugging format.
 # Native formats for GCC's -g are stabs [default], or dwarf-2.
